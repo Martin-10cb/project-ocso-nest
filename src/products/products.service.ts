@@ -9,6 +9,31 @@ import { Repository } from 'typeorm';
 
 @Injectable()
 export class ProductsService {
+  
+  private products: CreateProductDto[] = [
+    {
+      productId: uuid(),
+      productName: "Sabritas Clasicas 40g",
+      price: 29,
+      countSeal: 3,
+      provider: uuid()
+    },
+    {
+      productId: uuid(),
+      productName: "Coca Cola 300ml",
+      price: 40,
+      countSeal: 2,
+      provider: uuid()
+    },
+    {
+      productId: uuid(),
+      productName: "Agua ciel 1L",
+      price: 15,
+      countSeal: 2,
+      provider: uuid()
+    }
+  ]
+
   constructor(
     @InjectRepository(Product)
     private productRepository: Repository<Product>
