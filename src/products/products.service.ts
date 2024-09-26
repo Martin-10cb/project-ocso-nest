@@ -10,30 +10,6 @@ import { Repository } from 'typeorm';
 @Injectable()
 export class ProductsService {
   
-  private products: CreateProductDto[] = [
-    {
-      productId: uuid(),
-      productName: "Sabritas Clasicas 40g",
-      price: 29,
-      countSeal: 3,
-      provider: uuid()
-    },
-    {
-      productId: uuid(),
-      productName: "Coca Cola 300ml",
-      price: 40,
-      countSeal: 2,
-      provider: uuid()
-    },
-    {
-      productId: uuid(),
-      productName: "Agua ciel 1L",
-      price: 15,
-      countSeal: 2,
-      provider: uuid()
-    }
-  ]
-
   constructor(
     @InjectRepository(Product)
     private productRepository: Repository<Product>
@@ -57,9 +33,10 @@ export class ProductsService {
 
 
   findByProvider(id:string){
-    const productsFound = this.products.filter((product) => product.provider == id);
-    if (productsFound.length == 0) throw new NotFoundException;
-    return productsFound;
+    // const productsFound = this.products.filter((product) => product.provider == id);
+    // if (productsFound.length == 0) throw new NotFoundException;
+    // return productsFound;
+    return "Ok"
   }
 
   async update(id: string, updateProductDto: UpdateProductDto) {
