@@ -4,7 +4,8 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { LoginUserDto } from './dto/login-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { ApiAuth } from './decorators/api.decorator';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiResponse, ApiTags } from '@nestjs/swagger';
+import { User } from './entities/user.entity';
 
 
 @ApiAuth()
@@ -14,11 +15,25 @@ export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
   @Post("signup")
+  @ApiResponse({
+    status: 201,
+    example: {
+      userEmail: "martin@gmail.com",
+      userPassword: "71bsi1972",
+    } as User
+  })
   signup(@Body() createUserDto: CreateUserDto){
     return this.authService.registerUser(createUserDto)
   }
 
   @Post("login")
+  @ApiResponse({
+    status: 201,
+    example: {
+      userEmail: "martin@gmail.com",
+      userPassword: "71bsi1972",
+    } as User
+  })
   login(@Body() loginUserDto :LoginUserDto){
     return this.authService.loginUser(loginUserDto)
   }

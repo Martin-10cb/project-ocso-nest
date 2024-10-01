@@ -11,9 +11,9 @@ export class CreateProductDto extends Product {
     @MaxLength(40)
     productName: string;
     @IsNumber()
-    price: number;
+    productPrice: number;
     @IsInt()
-    countSeal: number;
+    productCountSeal: number;
     @IsObject()
-    provider: Provider;
+    productProvider: Provider;
 }
