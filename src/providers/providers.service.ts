@@ -46,5 +46,8 @@ export class ProvidersService {
     this.providerRepository.delete({
       providerId: id
     })
+    return {
+      message: "Objeto con id ${id} eliminado"
+    }
   }
 }
