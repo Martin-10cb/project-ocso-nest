@@ -27,7 +27,11 @@ export class CreateEmployeeDto extends Employee{
 
     @ApiPropertyOptional()
     @IsOptional()
-    @IsObject()
+    @IsString()
     location: Location;
+
+    @ApiPropertyOptional()
+    @IsOptional()
+    employeePhoto: string;
 }
 
