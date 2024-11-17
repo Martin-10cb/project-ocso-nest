@@ -8,6 +8,7 @@ import {
   Delete,
   Res,
   BadRequestException,
+  Query,
 } from "@nestjs/common";
 import { AuthService } from "./auth.service";
 import { CreateUserDto } from "./dto/create-user.dto";
@@ -26,7 +27,7 @@ import { Cookies } from "./decorators/cookies.decorator";
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
-  @Post("register/employee/[id]")
+  @Post("register/:id")
   @ApiResponse({
     status: 201,
     example: {
@@ -34,23 +35,17 @@ export class AuthController {
       userPassword: "71bsi1972",
     } as User,
   })
-  registerEmployee(@Body() createUserDto: CreateUserDto, @Param("id") id: string) {
-    if (
-      createUserDto.useRoles.includes("Admin") ||
-      createUserDto.useRoles.includes("Manager")
-    )
-      throw new BadRequestException("Rol invalido");
-    return this.authService.registerEmployee(id, createUserDto);
-  }
-
-  @Post("register/manager")
-  registerManager(@Body() createUserDto: CreateUserDto, @Param("id") id: string) {
-    if (
-      createUserDto.useRoles.includes("Admin") ||
-      createUserDto.useRoles.includes("Employee")
-    )
-      throw new BadRequestException("Rol invalido");
-    return this.authService.registerManager(id, createUserDto);
+  registerManager(
+    @Query("role") role: string,
+    @Body() createUserDto: CreateUserDto,
+    @Param("id") id: string
+  ) {
+    if (role === "manager") {
+      return this.authService.registerManager(id, createUserDto);
+    } else if (role === "employee") {
+      return this.authService.registerEmployee(id, createUserDto);
+    }
+    throw new BadRequestException("Rol invalido");
   }
   @Post("login")
   @ApiResponse({
