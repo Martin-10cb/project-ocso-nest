@@ -1,4 +1,8 @@
-import { BadRequestException, Injectable, UnauthorizedException } from "@nestjs/common";
+import {
+  BadRequestException,
+  Injectable,
+  UnauthorizedException,
+} from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { User } from "./entities/user.entity";
 import { Repository } from "typeorm";
@@ -21,9 +25,9 @@ export class AuthService {
   ) {}
 
   async registerEmployee(id: string, createUserDto: CreateUserDto) {
-    const roles = createUserDto.useRoles
-    if (roles.includes("Admin") || roles.includes("Manager")){
-      throw new BadRequestException("Invalid")
+    const roles = createUserDto.useRoles;
+    if (roles.includes("Admin") || roles.includes("Manager")) {
+      throw new BadRequestException("Invalid");
     }
     createUserDto.userPassword = bcrypt.hashSync(createUserDto.userPassword, 5);
     const user = await this.userRepository.save(createUserDto);
@@ -35,9 +39,9 @@ export class AuthService {
   }
 
   async registerManager(id: string, createUserDto: CreateUserDto) {
-    const roles = createUserDto.useRoles
-    if (roles.includes("Admin") || roles.includes("Employee")){
-      throw new BadRequestException("Invalid")
+    const roles = createUserDto.useRoles;
+    if (roles.includes("Admin") || roles.includes("Employee")) {
+      throw new BadRequestException("Invalid");
     }
     createUserDto.userPassword = bcrypt.hashSync(createUserDto.userPassword, 5);
     const user = await this.userRepository.save(createUserDto);
@@ -45,7 +49,7 @@ export class AuthService {
       managerId: id,
     });
     manager.user = user;
-    return this.employeeRepository.save(manager);
+    return this.managerRepository.save(manager);
   }
 
   async loginUser(loginUserDto: LoginUserDto) {
@@ -69,9 +73,10 @@ export class AuthService {
     return token;
   }
 
-  async updateUser(userEmail: string, updateUserDto: UpdateUserDto) {
+  async updateUser(id: string, updateUserDto: UpdateUserDto) {
+    updateUserDto.userPassword = bcrypt.hashSync(updateUserDto.userPassword, 5);
     const newUserData = await this.userRepository.preload({
-      userEmail,
+      userId: id,
       ...updateUserDto,
     });
     this.userRepository.save(newUserData);
